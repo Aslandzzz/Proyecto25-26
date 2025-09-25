@@ -1,0 +1,451 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enciclopedia de Entomología - Proyecto Rahul Raj</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- INICIO DEL ESTILO ELEGANTE Y MEJORADO --- */
+        :root {
+            --bg-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --primary-text: #212529;
+            --secondary-text: #6c757d;
+            --accent-color: #34568B; /* Un azul más profundo y serio */
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --highlight-color: #FFC107; /* Amarillo para resaltar la búsqueda */
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            scroll-behavior: smooth;
+            font-size: clamp(1rem, 0.95rem + 0.25vw, 1.15rem); 
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        header {
+            background-color: var(--surface-color);
+            padding: 25px 40px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        header h1 {
+            margin: 0 0 15px 0;
+            font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+            color: var(--primary-text);
+        }
+
+        #searchInput {
+            width: 60%;
+            max-width: 450px;
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            font-size: 1em;
+            font-family: 'Lora', serif;
+            transition: all 0.3s ease;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 86, 139, 0.2);
+        }
+
+        main {
+            padding: 30px 40px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        #table-of-contents {
+            background-color: transparent;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border: none;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        #table-of-contents h2 {
+            margin-top: 0;
+            text-align: center;
+            border-bottom: none;
+            padding-bottom: 15px;
+            font-size: 1.8em;
+            color: var(--accent-color);
+        }
+
+        #table-of-contents nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            text-align: center;
+        }
+
+        #table-of-contents a {
+            text-decoration: none;
+            color: var(--primary-text);
+            font-family: 'Montserrat', sans-serif;
+            padding: 12px;
+            border-radius: 5px;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+
+        #table-of-contents a:hover {
+            background-color: var(--surface-color);
+            color: var(--accent-color);
+            border-color: var(--border-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+
+        .encyclopedia-entry {
+            background-color: var(--surface-color);
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 6px 15px var(--shadow-color);
+        }
+
+        .encyclopedia-entry h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            font-size: clamp(1.6rem, 1.4rem + 1.2vw, 2.2rem);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .encyclopedia-entry img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: block;
+        }
+
+        dl dt {
+            font-weight: bold;
+            color: #343a40;
+            margin-top: 15px;
+        }
+
+        dl dd {
+            margin-left: 20px;
+            margin-bottom: 10px;
+            color: var(--secondary-text);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: var(--secondary-text);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: none;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background-color: #2c4770;
+            transform: scale(1.1) translateY(-2px);
+        }
+        
+        /* Estilos para la búsqueda mejorada */
+        mark {
+            background-color: var(--highlight-color);
+            color: #333;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        #no-results {
+            padding: 40px;
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            color: var(--secondary-text);
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        /* --- FIN DE LOS ESTILOS --- */
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Proyecto 25/26 Rahul Raj</h1>
+        <input type="text" id="searchInput" placeholder="Buscar en la enciclopedia...">
+    </header>
+
+    <main id="content">
+        
+        <section id="table-of-contents">
+             <h2>Índice de Contenidos</h2>
+             <nav aria-label="Índice principal de la enciclopedia">
+                <a href="#caracteristicas">1. Características Biológicas</a>
+                <a href="#anatomia-externa">2. Anatomía Externa</a>
+                <a href="#anatomia-interna">3. Anatomía Interna</a>
+                <a href="#ciclo-vital">4. Ciclo Vital</a>
+                <a href="#ordenes">5. Órdenes de Plagas</a>
+                <a href="#glosario">6. Glosario</a>
+             </nav>
+        </section>
+
+        <p id="no-results" style="display: none;"></p>
+
+        <article id="caracteristicas" class="encyclopedia-entry">
+            <h2>1. Características biológicas de los insectos</h2>
+            <img src="images/exoesqueleto.jpg" alt="Primer plano del exoesqueleto detallado de un insecto" loading="lazy">
+            <p>El éxito y la superioridad numérica de los insectos se deben a varias características biológicas clave que les confieren una gran resistencia. Estas son:</p>
+            <ul>
+                <li><strong>Exoesqueleto:</strong> Los insectos poseen un esqueleto externo endurecido, compuesto principalmente de quitina córnea. Esta cubierta protege su cuerpo, evita la deshidratación y les ha permitido colonizar hábitats fuera de los ambientes húmedos de sus antepasados.</li>
+                <li><strong>Tamaño:</strong> Son organismos relativamente pequeños. Su tamaño reducido es una ventaja, ya que les permite ocupar lugares inadecuados para organismos más grandes y necesitar poco alimento para subsistir.</li>
+                <li><strong>Adaptabilidad:</strong> Han colonizado casi todos los hábitats del planeta. Sus apéndices y aparato bucal se han modificado para una gran variedad de funciones y alimentos.</li>
+                <li><strong>Vuelo:</strong> La capacidad de volar les ha permitido dispersarse con facilidad para colonizar nuevos hábitats, escapar de depredadores y encontrar nuevos recursos y áreas de cría.</li>
+                <li><strong>Metamorfosis:</strong> Permite que las fases larvales y adultas no compitan por los mismos recursos al ocupar diferentes nichos ecológicos.</li>
+            </ul>
+        </article>
+        
+        <article id="anatomia-externa" class="encyclopedia-entry">
+            <h2>2. Anatomía externa de los insectos</h2>
+            <img src="images/ojos-compuestos.jpg" alt="Macro de los ojos compuestos de una mosca" loading="lazy">
+            <p>El cuerpo de los insectos se divide en tres regiones principales: <strong>cabeza, tórax y abdomen</strong>. Pueden tener alas o no (ser alados o ápteros) como una adaptación al medio.</p>
+            <h3>Exoesqueleto</h3>
+            <p>Es la cubierta externa del insecto y consta de tres capas: la <strong>cutícula</strong> (membrana externa e impermeable), la <strong>epidermis</strong> (una capa de células que genera la cutícula) y la <strong>lámina basal</strong>.</p>
+            <h3>Cabeza</h3>
+            <p>Es la región anterior del cuerpo, donde se encuentran el aparato bucal, las antenas y los órganos de la visión (ojos compuestos y ocelos simples).</p>
+            <h3>Tórax</h3>
+            <p>Es la región intermedia del cuerpo, dividida en protórax, mesotórax y metatórax. Aquí se anclan las seis patas y, generalmente, los dos pares de alas.</p>
+        </article>
+        
+        <article id="anatomia-interna" class="encyclopedia-entry">
+            <h2>3. Anatomía interna de los insectos</h2>
+            <p>Los sistemas internos de los insectos están altamente especializados para su pequeño tamaño y estilo de vida.</p>
+            <ul>
+                <li><strong>Aparato circulatorio:</strong> Es un sistema abierto. Un vaso dorsal (corazón y aorta) bombea la hemolinfa (sangre) sin circular por venas o arterias cerradas.</li>
+                <li><strong>Aparato respiratorio:</strong> La respiración es traqueal. El aire entra por aberturas externas llamadas espiráculos y viaja por una red de tubos (tráqueas) que se ramifican para llevar oxígeno directamente a las células.</li>
+                <li><strong>Sistema nervioso:</strong> Consta de un cerebro en la cabeza y una cadena de ganglios nerviosos que recorre la parte ventral del cuerpo.</li>
+                <li><strong>Aparato digestivo:</strong> Un tubo dividido en intestino anterior (almacenamiento y trituración), medio (digestión y absorción) y posterior (absorción de agua y eliminación).</li>
+                <li><strong>Aparato excretor:</strong> Su principal componente son los tubos de Malpighi, que filtran los desechos de la hemolinfa, cumpliendo una función similar a la de los riñones.</li>
+                <li><strong>Aparato reproductor:</strong> Los órganos varían entre machos (testículos) y hembras (ovarios, espermateca para almacenar esperma).</li>
+            </ul>
+        </article>
+
+        <article id="ciclo-vital" class="encyclopedia-entry">
+            <h2>4. Ciclo vital de los insectos</h2>
+            <img src="images/metamorfosis.jpg" alt="Mariposa Monarca emergiendo de su crisálida" loading="lazy">
+            <p>La mayoría de los insectos ponen huevos. Los cambios que experimenta el insecto joven hasta convertirse en adulto se denominan <strong>metamorfosis</strong>. Existen diferentes tipos:</p>
+            <ul>
+                <li><strong>Ametábolos (sin metamorfosis):</strong> El insecto joven es muy similar al adulto, diferenciándose solo en el tamaño y la madurez sexual. Crece a través de mudas sucesivas. Es típico de insectos primitivos como el pececillo de plata.</li>
+                <li><strong>Hemimetábolos (metamorfosis incompleta):</strong> Las etapas son huevo → ninfa → adulto. Las ninfas se parecen al adulto, comparten su hábitat y alimentación, y desarrollan las alas externamente poco a poco. Se da en cucarachas, saltamontes y chinches.</li>
+                <li><strong>Holometábolos (metamorfosis completa):</strong> Las etapas son huevo → larva → pupa → adulto. La larva (oruga, gusano) es completamente diferente al adulto en aspecto, dieta y hábitat. Pasa por una fase de reposo y reorganización interna llamada pupa o crisálida. Es el tipo más común (escarabajos, mariposas, moscas, abejas).</li>
+            </ul>
+        </article>
+
+        <article id="ordenes" class="encyclopedia-entry">
+            <h2>5. Órdenes de las plagas de insectos</h2>
+            <img src="images/coleoptera.jpg" alt="Escarabajo con élitros brillantes sobre una hoja verde" loading="lazy">
+            <p>Los órdenes de insectos de interés sanitario mencionados en el documento son:</p>
+            <ul>
+                <li><strong>O. Collembola (Colémbolos):</strong> Pequeños, con aparato bucal masticador y un apéndice saltador. Son ametábolos.</li>
+                <li><strong>O. Zygentoma (Pececillo de plata):</strong> Cuerpo aplanado, aparato bucal masticador y tres filamentos caudales. Son ametábolos.</li>
+                <li><strong>O. Orthoptera (Saltamontes, grillos):</strong> Tercer par de patas adaptado para el salto y alas delanteras coriáceas (tegminas). Son hemimetábolos.</li>
+                <li><strong>O. Blattodea (Cucarachas):</strong> Cuerpo de tamaño mediano a grande, con antenas largas y patas aptas para correr. Son hemimetábolos.</li>
+                <li><strong>Infraorden Isoptera (Termitas):</strong> Insectos sociales con castas (reproductores, obreras, soldados). Tienen aparato bucal masticador. Son hemimetábolos.</li>
+                <li><strong>O. Psocoptera (Piojos de los libros):</strong> De pequeño tamaño, con aparato bucal masticador. Son hemimetábolos.</li>
+                <li><strong>O. Phthiraptera (Piojos):</strong> Insectos pequeños y ápteros. Los malófagos son masticadores y los anopluros son picadores-chupadores. Son hemimetábolos.</li>
+                <li><strong>O. Dermaptera (Tijeretas):</strong> Tienen apéndices en forma de tenaza al final del abdomen y aparato bucal masticador. Son hemimetábolos.</li>
+                <li><strong>O. Hemiptera (Chinches, pulgones):</strong> Con aparato bucal picador-chupador. Las chinches verdaderas (heterópteros) a menudo tienen alas delanteras tipo hemiélitros. Son hemimetábolos.</li>
+                <li><strong>O. Coleoptera (Escarabajos, carcomas):</strong> Sus alas anteriores están endurecidas formando élitros. Tienen un aparato bucal masticador. Son holometábolos.</li>
+                <li><strong>O. Lepidoptera (Mariposas, polillas):</strong> Tienen el cuerpo y las alas cubiertas de escamas. Los adultos poseen un aparato bucal chupador (espiritrompa) y las larvas (orugas) son masticadoras. Son holometábolos.</li>
+                <li><strong>O. Diptera (Moscas, mosquitos):</strong> Poseen un solo par de alas membranosas y un segundo par modificado en halterios (balancines). Su aparato bucal es chupador-lamedor o picador-chupador. Son holometábolos.</li>
+                <li><strong>O. Siphonaptera (Pulgas):</strong> Insectos pequeños, ápteros y comprimidos lateralmente. Son ectoparásitos con aparato bucal picador-chupador. Son holometábolos.</li>
+                <li><strong>O. Hymenoptera (Abejas, avispas, hormigas):</strong> Con alas membranosas y aparato bucal masticador, a menudo adaptado para lamer. Muchas especies son sociales y las hembras pueden tener un ovopositor modificado en aguijón. Son holometábolos.</li>
+            </ul>
+        </article>
+        
+        <article id="glosario" class="encyclopedia-entry">
+            <h2>Glosario</h2>
+            <dl>
+                <dt><strong>Ametábolo</strong></dt>
+                <dd>Tipo de desarrollo sin metamorfosis, donde el insecto joven es una réplica en miniatura del adulto.</dd>
+
+                <dt><strong>Artejos</strong></dt>
+                <dd>Cada uno de los segmentos que forman las antenas de un insecto.</dd>
+
+                <dt><strong>Crisálida</strong></dt>
+                <dd>Nombre que se le da a la pupa en el orden de los lepidópteros (mariposas y polillas).</dd>
+                
+                <dt><strong>Cutícula</strong></dt>
+                <dd>La capa más externa y rígida del exoesqueleto, compuesta principalmente de quitina.</dd>
+
+                <dt><strong>Élitros</strong></dt>
+                <dd>Alas anteriores endurecidas y rígidas que protegen las alas funcionales en los escarabajos (Coleoptera). No se usan para volar.</dd>
+                
+                <dt><strong>Espíráculos</strong></dt>
+                <dd>Aberturas externas en el abdomen y tórax del insecto que forman parte del sistema respiratorio traqueal, por donde entra el aire.</dd>
+
+                <dt><strong>Exoesqueleto</strong></dt>
+                <dd>Esqueleto externo que protege el cuerpo del insecto y evita la deshidratación.</dd>
+
+                <dt><strong>Halterios</strong></dt>
+                <dd>Alas posteriores modificadas, muy pequeñas y con forma de maza, que ayudan a mantener el equilibrio durante el vuelo en los dípteros (moscas y mosquitos).</dd>
+                
+                <dt><strong>Hemimetábolo</strong></dt>
+                <dd>Tipo de desarrollo con metamorfosis incompleta o gradual (huevo → ninfa → adulto).</dd>
+                
+                <dt><strong>Hemiélitros</strong></dt>
+                <dd>Alas anteriores típicas de los chinches (Hemiptera), con la mitad basal dura (como un élitro) y la mitad distal membranosa.</dd>
+
+                <dt><strong>Hemolinfa</strong></dt>
+                <dd>Líquido circulatorio de los insectos, análogo a la sangre en los vertebrados.</dd>
+
+                <dt><strong>Holometábolo</strong></dt>
+                <dd>Tipo de desarrollo con metamorfosis completa (huevo → larva → pupa → adulto).</dd>
+
+                <dt><strong>Larva</strong></dt>
+                <dd>Etapa inmadura en los insectos holometábolos, completamente diferente al adulto (ej. orugas, gusanos).</dd>
+                
+                <dt><strong>Metamorfosis</strong></dt>
+                <dd>Proceso de profundos cambios anatómicos y fisiológicos desde que el insecto nace hasta que llega a la edad adulta.</dd>
+                
+                <dt><strong>Ninfa</strong></dt>
+                <dd>Etapa inmadura en los insectos hemimetábolos, de aspecto similar al adulto pero sin alas desarrolladas ni madurez sexual.</dd>
+                
+                <dt><strong>Omatidio</strong></dt>
+                <dd>Cada una de las unidades visuales individuales que forman los ojos compuestos de un insecto.</dd>
+                
+                <dt><strong>Pupa</strong></dt>
+                <dd>Etapa de reposo y transformación en los insectos holometábolos, durante la cual no se alimentan y reorganizan su cuerpo para convertirse en adultos.</dd>
+                
+                <dt><strong>Quitina</strong></dt>
+                <dd>Polisacárido que es el principal componente estructural de la cutícula del exoesqueleto de los insectos.</dd>
+
+                <dt><strong>Tegminas</strong></dt>
+                <dd>Alas anteriores con una consistencia similar al cuero o pergamino, que protegen las alas posteriores. Típicas de saltamontes y cucarachas (Orthoptera y Blattodea).</dd>
+
+                <dt><strong>Tráqueas</strong></dt>
+                <dd>Red de tubos internos y ramificados que llevan el aire desde los espiráculos directamente a los tejidos del insecto para la respiración.</dd>
+
+                <dt><strong>Tubos de Malpighi</strong></dt>
+                <dd>Principal órgano excretor de los insectos, con una función análoga a los riñones de los vertebrados.</dd>
+            </dl>
+        </article>
+
+    </main>
+
+    <footer>
+        <p>&copy; Rahul Raj Proyecto 25/26</p>
+    </footer>
+
+    <a href="#" class="back-to-top" title="Volver arriba">&uarr;</a>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const articles = document.querySelectorAll('.encyclopedia-entry');
+            const noResultsMessage = document.getElementById('no-results');
+
+            // Guardamos el contenido original de cada artículo para poder restaurarlo
+            const originalContent = new Map();
+            articles.forEach(article => {
+                originalContent.set(article, article.innerHTML);
+            });
+
+            function performSearch() {
+                const query = searchInput.value.trim().toLowerCase();
+                let resultsFound = 0;
+
+                // Si no hay nada en la búsqueda, restaura todo y sal
+                if (query === "") {
+                    articles.forEach(article => {
+                        article.innerHTML = originalContent.get(article);
+                        article.style.display = 'block';
+                    });
+                    noResultsMessage.style.display = 'none';
+                    return;
+                }
+
+                const queryRegex = new RegExp(query, 'gi'); // 'g' para global, 'i' para case-insensitive
+
+                articles.forEach(article => {
+                    const originalHTML = originalContent.get(article);
+                    
+                    // Reemplaza el texto que coincide con la búsqueda por el mismo texto envuelto en <mark>
+                    const highlightedHTML = originalHTML.replace(queryRegex, (match) => `<mark>${match}</mark>`);
+                    
+                    // Si el contenido ha cambiado (es decir, se encontró una coincidencia)
+                    if (originalHTML !== highlightedHTML) {
+                        article.innerHTML = highlightedHTML;
+                        article.style.display = 'block';
+                        resultsFound++;
+                    } else {
+                        // Si no hay coincidencias, oculta el artículo
+                        article.innerHTML = originalHTML; // Restaura por si acaso
+                        article.style.display = 'none';
+                    }
+                });
+
+                // Muestra o oculta el mensaje de "Sin resultados"
+                if (resultsFound === 0) {
+                    noResultsMessage.textContent = `No se encontraron resultados para "${searchInput.value}"`;
+                    noResultsMessage.style.display = 'block';
+                } else {
+                    noResultsMessage.style.display = 'none';
+                }
+            }
+
+            // Lógica para el botón de "Volver Arriba"
+            let backToTopButton = document.querySelector(".back-to-top");
+
+            window.onscroll = function() {
+              if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopButton.style.display = "block";
+              } else {
+                backToTopButton.style.display = "none";
+              }
+            };
+
+            // Ejecuta la búsqueda cada vez que se escribe en la barra
+            searchInput.addEventListener('keyup', performSearch);
+        });
+    </script>
+
+</body>
+</html>
